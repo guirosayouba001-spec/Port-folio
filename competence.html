@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SayoubaGuiro_portfolio</title>
+
+    <!-- Police moderne -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+
+    <style>
+
+        /* ===== VARIABLES ===== */
+        :root {
+            --fond: rgb(2, 2, 43);
+            --fond-header: rgba(1, 1, 20, 0.75);
+            --or: #ffcc19;
+            --texte: #e8e8f0;
+            --texte-doux: #a9aac8;                  /* AJOUT : gris-bleu pour les textes secondaires */
+            --carte-haut: #10105a;                  /* AJOUT : couleurs du dégradé des cartes */
+            --carte-bas: #07072e;
+        }
+
+
+        /* ===== PAGE ===== */
+        body {
+            margin: 0;
+            background-color: var(--fond);
+            /* MODIF : deux "lueurs" douces (or + bleu) pour casser le fond uni et donner de la profondeur */
+            background-image:
+                radial-gradient(circle at 15% 0%, rgba(255, 204, 25, 0.10), transparent 40%),
+                radial-gradient(circle at 90% 35%, rgba(27, 119, 240, 0.18), transparent 45%);
+            background-attachment: fixed;           /* les lueurs restent en place quand on scrolle */
+            display: flex;
+            flex-direction: column;
+            font-family: 'Poppins', sans-serif;
+            color: var(--texte);
+            min-height: 100vh;                      /* MODIF : était 200vh (page 2x trop longue pour rien) */
+        }
+
+
+        /* ===== ENTÊTE ===== */
+        .header {
+            display: flex;
+            flex-direction: row;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-sizing: border-box;
+            width: 100%;
+            height: 70px;
+            padding: 0 40px;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--fond-header);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .header::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--or), transparent);
+            opacity: 0.6;
+        }
+
+        .header h3 {
+            color: white;
+        }
+
+
+        /* ===== LOGO ===== */
+        .logo {
+            font-size: 19px;
+            font-weight: 900;
+            letter-spacing: -1px;
+            color: white;
+            text-align: center;
+            cursor: pointer;
+            transition: text-shadow 0.3s ease, transform 0.3s ease;
+        }
+
+        .logo h1 {
+            margin: 0;
+        }
+
+        .logo span {
+            color: var(--or);
+        }
+
+        .logo:hover {
+            transform: scale(1.08);
+            text-shadow: 0 0 12px rgba(255, 204, 25, 0.6);
+        }
+
+
+        /* ===== NAVIGATION ===== */
+        .nav {
+            display: flex;
+            gap: 8px;
+        }
+
+        .header a {
+            position: relative;
+            color: var(--texte);
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 500;
+            padding: 8px 14px;
+            border-radius: 20px;
+            transition: color 0.3s ease, background-color 0.3s ease;
+        }
+
+        .header a::after {
+            content: "";
+            position: absolute;
+            left: 50%;
+            bottom: 2px;
+            width: 0;
+            height: 2px;
+            background-color: var(--or);
+            border-radius: 2px;
+            transform: translateX(-50%);
+            transition: width 0.3s ease;
+        }
+
+        .header a:hover {
+            color: var(--or);
+        }
+
+        .header a:hover::after {
+            width: 50%;
+        }
+
+        .header a:focus-visible {
+            outline: 2px solid var(--or);
+            outline-offset: 2px;
+        }
+
+        .header a.active {
+            color: var(--or);
+            background-color: rgba(255, 204, 25, 0.12);
+        }
+
+        .header a.active::after {
+            width: 0;
+        }
+
+
+        /* ===== PETITS ÉCRANS ===== */
+        @media (max-width: 768px) {
+            .header {
+                padding: 0 16px;
+            }
+
+            .nav {
+                gap: 2px;
+                overflow-x: auto;
+            }
+
+            .header a {
+                font-size: 13px;
+                padding: 6px 10px;
+                white-space: nowrap;
+            }
+        }
+
+
+        /* ===== AJOUT : TITRE DE LA PAGE ===== */
+        .titre-page {
+            text-align: center;
+            margin: 50px 20px 10px;
+        }
+
+        .titre-page h2 {
+            margin: 0;
+            font-size: clamp(28px, 5vw, 44px);      /* taille qui s'adapte à l'écran (min 28px, max 44px) */
+            font-weight: 900;
+            color: white;
+            letter-spacing: -1px;
+        }
+
+        .titre-page h2 span {
+            color: var(--or);
+        }
+
+        /* petit trait doré sous le titre */
+        .titre-page h2::after {
+            content: "";
+            display: block;
+            width: 70px;
+            height: 4px;
+            margin: 14px auto 0;
+            background: var(--or);
+            border-radius: 4px;
+            box-shadow: 0 0 14px rgba(255, 204, 25, 0.7);
+        }
+
+        .titre-page p {
+            margin: 16px 0 0;
+            color: var(--texte-doux);
+            font-size: 15px;
+        }
+
+
+        /* ===== CONTENEUR DES COMPÉTENCES ===== */
+        .conteneurComp {
+            max-width: 1300px;                      /* MODIF : la grille ne s'étire plus à l'infini sur grand écran */
+            margin: 40px auto 60px;                 /* MODIF : auto = grille centrée */
+            padding: 0 20px;
+            box-sizing: border-box;
+            display: grid;
+            /* MODIF : colonnes automatiques. Autant de colonnes que la place le permet (3 sur PC, 2 sur tablette, 1 sur téléphone) */
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));
+            width: 100%;
+            height: auto;
+            gap: 28px;                              /* MODIF : plus d'air entre les cartes (était 20px) */
+        }
+
+
+        /* ===== STYLE COMMUN AUX 6 CARTES ===== */
+        /* MODIF : au lieu de répéter les mêmes lignes 6 fois, on les regroupe ici */
+        .comp1, .comp2, .comp3, .comp4, .comp5, .comp6 {
+            --accent: var(--or);                    /* couleur propre à chaque carte (redéfinie plus bas) */
+            position: relative;
+            box-sizing: border-box;
+            width: 100%;
+            min-height: 250px;                      /* MODIF : hauteur minimale au lieu de 200px fixe (le contenu ne sera plus rogné) */
+            padding: 14px 16px 18px;
+            border-radius: 18px;                    /* MODIF : coins plus arrondis (était 10px) */
+            background: linear-gradient(145deg, var(--carte-haut), var(--carte-bas));   /* MODIF : dégradé à la place d'un fond uni */
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-top: 4px solid var(--accent);    /* liseré de couleur en haut = identité de la carte */
+            overflow: hidden;
+            /* ton ombre élevée, gardée et adoucie avec la couleur de la carte */
+            box-shadow:
+                0 25px 50px rgba(0, 0, 0, 0.7),
+                0 0 30px rgba(255, 204, 25, 0.25);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            animation: apparition 0.6s ease both;   /* AJOUT : les cartes apparaissent en montant */
+        }
+
+        /* Au survol : la carte monte et son halo prend la couleur de la carte */
+        .comp1:hover, .comp2:hover, .comp3:hover, .comp4:hover, .comp5:hover, .comp6:hover {
+            transform: translateY(-8px);
+            box-shadow:
+                0 35px 60px rgba(0, 0, 0, 0.8),
+                0 0 40px var(--accent);
+        }
+
+        /* Une couleur d'accent différente par carte */
+        .comp1 { --accent: #ffcc19; }   /* or     : mobile */
+        .comp2 { --accent: #7CFC00; }   /* vert   : web */
+        .comp3 { --accent: #3b9bff; }   /* bleu   : backend et base de données */
+        .comp4 { --accent: #ff8a3d; }   /* orange : backend */
+        .comp5 { --accent: #b57bff; }   /* violet : outils et versioning */
+        .comp6 { --accent: #2de2e6; }   /* cyan   : autres compétences */
+
+        /* Les cartes arrivent l'une après l'autre (effet cascade) */
+        .conteneurComp > div:nth-child(1) { animation-delay: 0.05s; }
+        .conteneurComp > div:nth-child(2) { animation-delay: 0.15s; }
+        .conteneurComp > div:nth-child(3) { animation-delay: 0.25s; }
+        .conteneurComp > div:nth-child(4) { animation-delay: 0.35s; }
+        .conteneurComp > div:nth-child(5) { animation-delay: 0.45s; }
+        .conteneurComp > div:nth-child(6) { animation-delay: 0.55s; }
+
+        @keyframes apparition {
+            from { opacity: 0; transform: translateY(30px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Respect des personnes qui désactivent les animations dans leur système */
+        @media (prefers-reduced-motion: reduce) {
+            .comp1, .comp2, .comp3, .comp4, .comp5, .comp6 { animation: none; }
+        }
+
+        /* Titres des cartes */
+        .comp1 h3, .comp2 h3, .comp3 h3, .comp4 h3, .comp5 h3, .comp6 h3 {
+            color: white;
+            margin: 0;
+            font-size: 16px;                        /* MODIF : h5 -> h3 (meilleur pour le référencement) et plus grand */
+            font-weight: 700;
+        }
+
+        /* SUPPRIMÉ : .comp1-1 et .comp1-1-niveau, ils n'étaient plus utilisés dans ton HTML */
+
+
+        /* ===== EN-TÊTE DES COMPOSANTS ===== */
+        .entetecontcomp {
+            margin: 0 0 6px;
+            padding-bottom: 10px;
+            display: flex;
+            gap: 10px;
+            justify-content: flex-start;
+            flex-direction: row;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);   /* AJOUT : fine ligne de séparation sous le titre */
+        }
+
+        /* Petite icône du titre : arrondie et avec un halo de la couleur de la carte */
+        .entetecontcomp img {
+            width: 26px;
+            height: 26px;
+            border-radius: 8px;
+            object-fit: cover;
+            box-shadow: 0 0 10px var(--accent);
+        }
+
+
+        /* ===== L'ÉTAGÈRE (les blocs de compétences) ===== */
+        .conteneurComp-general {
+            width: 100%;
+            height: auto;                           /* MODIF : était 170px fixe */
+            display: flex;
+            flex-direction: row;                    /* côte à côte */
+            flex-wrap: wrap;                        /* AJOUT : si ça ne rentre pas, les blocs passent à la ligne au lieu de déborder */
+            justify-content: space-around;
+            align-items: flex-start;
+            gap: 10px 4px;
+        }
+
+
+        /* ===== UN BLOC DE COMPÉTENCE ===== */
+        .comp2-1 {
+            margin-top: 14px;
+            gap: 6px;
+            width: 105px;
+            height: auto;                           /* MODIF : était 150px fixe */
+            padding: 10px 6px;
+            border-radius: 14px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            text-align: center;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+
+        /* AJOUT : au survol, le bloc grossit un peu et s'éclaire */
+        .comp2-1:hover {
+            transform: scale(1.08);
+            background-color: rgba(255, 255, 255, 0.06);
+        }
+
+        /* Logo : posé sur une tuile claire pour que les logos .jpg (fond blanc) ne fassent pas "carré blanc moche" */
+        .comp2-1 img {
+            width: 65px;
+            height: 65px;
+            padding: 8px;
+            box-sizing: border-box;
+            object-fit: contain;
+            background-color: white;
+            border-radius: 16px;
+            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.45);
+        }
+
+        .comp2-1 p {
+            color: white;
+            margin: 0;
+        }
+
+        /* 1er paragraphe = nom de la techno */
+        .comp2-1 > p:nth-of-type(1) {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        /* 2e paragraphe = petite description (plus discrète) */
+        .comp2-1 > p:nth-of-type(2) {
+            font-size: 11px;
+            color: var(--texte-doux);
+            line-height: 1.3;
+        }
+
+
+        /* ===== BADGE DE NIVEAU ===== */
+        .comp2-1-niveau {
+            margin-top: 4px;
+            padding: 0 12px;                        /* MODIF : largeur automatique selon le texte (était 76px fixe) */
+            height: 24px;
+            background-color: rgba(255, 255, 255, 0.06);   /* MODIF : fond discret à la place du bleu vif */
+            border: 1px solid var(--accent);        /* bordure de la couleur de la carte */
+            border-radius: 20px;                    /* forme "pilule" */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* (placé APRÈS .comp2-1 p pour que la couleur du badge l'emporte) */
+        .comp2-1-niveau p {
+            color: var(--accent);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+
+        /* ===== AJOUT : PIED DE PAGE ===== */
+        .pied {
+            margin-top: auto;                       /* colle le pied de page en bas, même si la page est courte */
+            padding: 22px 20px;
+            text-align: center;
+            font-size: 13px;
+            color: var(--texte-doux);
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .pied span {
+            color: var(--or);
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <!-- ===== HEADER ===== -->
+    <header class="header">
+
+        <div class="logo">
+            <h1>S <span>G</span></h1>
+        </div>
+
+        <nav class="nav">
+            <a href="index.html">Accueil</a>
+            <a href="a_propos.html">À propos</a>
+            <a href="projet.html">Projets</a>
+            <a href="competence.html" class="active">Compétences</a>
+            <a href="parcours.html">Parcours</a>
+            <a href="contact.html">Contact</a>
+        </nav>
+
+    </header>
+
+
+    <!-- ===== SECTION COMPÉTENCES ===== -->
+    <section>
+
+        <!-- AJOUT : titre de la page -->
+        <div class="titre-page">
+            <h2>Mes <span>compétences</span></h2>
+            <p>Les technologies et outils que j'utilise pour donner vie à mes projets</p>
+        </div>
+
+        <div class="conteneurComp">
+
+            <!-- Conteneur Dev mobile -->
+            <div class="comp1">
+
+                <div class="entetecontcomp">
+                    <img src="images/logomobile.jpg" alt="logo programmation mobile 1">
+                    <h3>Développement mobile</h3>
+                </div>
+                <div class="conteneurComp-general">
+
+                    <!-- Bloc Flutter -->
+                    <div class="comp2-1">
+                        <img src="images/logo-flutter.png" alt="logo Flutter">
+                        <p>Flutter</p>
+                        <p>Framework mobile</p>
+
+                        <div class="comp2-1-niveau">
+                            <p>Avancé</p>
+                        </div>
+                    </div>
+
+                    <!-- Bloc Dart -->
+                    <div class="comp2-1">
+                        <img src="images/logo-dart.png" alt="logo Dart">
+                        <p>Dart</p>
+                        <p>Langage</p>
+
+                        <div class="comp2-1-niveau">
+                            <p>Avancé</p>
+                        </div>
+                    </div>
+
+                </div> <!-- ferme conteneurComp-general (l'étagère du mobile) -->
+
+            </div> <!-- ferme comp1 -->
+
+
+            <!-- Conteneur Dev web -->
+            <div class="comp2">
+
+                <div class="entetecontcomp">
+                    <img src="images/logoweb.jpg" alt="logo programmation web 1">
+                    <h3>Développement web</h3>
+                </div>
+
+                <div class="conteneurComp-general">
+
+                    <!-- Bloc HTML -->
+                    <div class="comp2-1">
+                        <img src="images/logohtml.jpg" alt="logo HTML">
+                        <p>HTML</p>
+                        <p>Structure</p>
+
+                        <div class="comp2-1-niveau">
+                            <p>Avancé</p>
+                        </div>
+                    </div>
+
+                    <!-- Bloc CSS -->
+                    <div class="comp2-1">
+                        <img src="images/logocss.jpg" alt="logo CSS">
+                        <p>CSS</p>
+                        <p>Design</p>
+
+                        <div class="comp2-1-niveau">
+                            <p>Avancé</p>
+                        </div>
+                    </div>
+
+                    <!-- Bloc JavaScript -->
+                    <div class="comp2-1">
+                        <img src="images/logojs.jpg" alt="logo JavaScript">
+                        <p>JavaScript</p>
+                        <p>Interactivité</p>
+
+                        <div class="comp2-1-niveau">
+                            <p>Avancé</p>
+                        </div>
+                    </div>
+
+                </div> <!-- ferme l'étagère du web -->
+
+            </div> <!-- ferme comp2 -->
+
+
+            <!-- Conteneur Backend et base de données -->
+            <div class="comp3">
+
+                <div class="entetecontcomp">
+                    <img src="images/logobd.jpg" alt="logo base de données 1">
+                    <h3> Base de données</h3>
+                </div>
+
+                <div class="conteneurComp-general">
+
+                    <!-- Bloc Firebase -->
+                    <div class="comp2-1">
+                        <img src="images/logofirebase.jpg" alt="logo Firebase">
+                        <p>Firebase</p>
+                        <p>Backend cloud</p>
+
+                        <div class="comp2-1-niveau">
+                            <p>Avancé</p>
+                        </div>
+                    </div>
+
+                    <!-- Bloc MySQL -->
+                    <div class="comp2-1">
+                        <img src="images/logoMySQL.jpg" alt="logo MySQL">
+                        <p>MySQL</p>
+                        <p>Base relationnelle</p>
+
+                        <div class="comp2-1-niveau">
+                            <p>Avancé</p>
+                        </div>
+                    </div>
+
+                    <!-- Bloc MongoDB -->
+                    <div class="comp2-1">
+                        <img src="images/logomongodb.jpg" alt="logo MongoDB">
+                        <p>MongoDB</p>
+                        <p>Base NoSQL</p>
+
+                        <div class="comp2-1-niveau">
+                            <p>Avancé</p>
+                        </div>
+                    </div>
+
+                </div> <!-- ferme l'étagère du backend -->
+
+            </div> <!-- ferme comp3 -->
+
+
+            <!-- Conteneur Backend -->
+            <div class="comp4">
+
+                <div class="entetecontcomp">
+                    <img src="images/logoversioning.jpg" alt="logo backend 1">
+                    <h3>Backend</h3>
+                </div>
+
+                <div class="conteneurComp-general">
+
+                    <!-- Bloc PHP -->
+                    <div class="comp2-1">
+                        <img src="images/logo-php.png" alt="logo PHP">
+                        <p>PHP</p>
+                        <p>Langage serveur</p>
+
+                        <div class="comp2-1-niveau">
+                            <p>Avancé</p>
+                        </div>
+                    </div>
+
+                    <!-- Bloc Laravel -->
+                    <div class="comp2-1">
+                        <img src="images/logolaravel.jpg" alt="logo Laravel">
+                        <p>Laravel</p>
+                        <p>Framework PHP</p>
+
+                        <div class="comp2-1-niveau">
+                            <p>Avancé</p>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Outils et versioning -->
+            <div class="comp5">
+
+                <div class="entetecontcomp">
+                    <img src="images/logogenerale.jpg" alt="logo général 1">
+                    <h3>Outils et versioning</h3>
+                </div>
+
+                <div class="conteneurComp-general">
+
+                    <!-- Bloc Git -->
+                    <div class="comp2-1">
+                        <img src="images/logogit.jpg" alt="logo Git">
+                        <p>Git</p>
+                        <p>Versioning</p>
+
+                        <div class="comp2-1-niveau">
+                            <p>Avancé</p>
+                        </div>
+                    </div>
+
+                    <!-- Bloc GitHub -->
+                    <div class="comp2-1">
+                        <img src="images/logogithub.jpg" alt="logo GitHub">
+                        <p>GitHub</p>
+                        <p>Hébergement de code</p>
+
+                        <div class="comp2-1-niveau">
+                            <p>Avancé</p>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Autres compétences -->
+            <div class="comp6">
+
+                <div class="entetecontcomp">
+                    <h3>Autres compétences</h3>
+                </div>
+
+                <div class="conteneurComp-general">
+
+                    <!-- Bloc VS Code -->
+                    <div class="comp2-1">
+                        <img src="images/logo-vscode.png" alt="logo VS Code">
+                        <p>VS Code</p>
+                        <p>Éditeur de code</p>
+
+                        <div class="comp2-1-niveau">
+                            <p>Avancé</p>
+                        </div>
+                    </div>
+
+                    <!-- Bloc Android Studio -->
+                    <div class="comp2-1">
+                        <img src="images/logoandroidstudio.jpg" alt="logo Android Studio">
+                        <p>Android Studio</p>
+                        <p>Émulateur Android</p>
+
+                        <div class="comp2-1-niveau">
+                            <p>Avancé</p>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div> <!-- ferme conteneurComp (la grille) -->
+
+    </section>
+
+
+    <!-- ===== AJOUT : PIED DE PAGE ===== -->
+    <footer class="pied">
+        © 2026 <span>Sayouba Guiro</span> · Portfolio
+    </footer>
+
+</body>
+</html>

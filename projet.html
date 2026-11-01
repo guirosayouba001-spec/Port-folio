@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SayoubaGuiro_portfolio</title>
+
+    <!-- Police moderne (optionnel, mais ça change tout) -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700;900&display=swap" rel="stylesheet">
+
+    <!-- ✅ Le style est maintenant DANS le <head>, sa vraie maison -->
+    <style>
+        /* 🎨 Variables : change une couleur ici, elle change partout */
+        :root {
+            --fond: rgb(2, 2, 43);
+            --fond-header: rgba(1, 1, 20, 0.75); /* semi-transparent pour l'effet verre */
+            --or: #ffcc19;
+            --texte: #e8e8f0;
+        }
+
+        body {
+            margin: 0;
+            background-color: var(--fond);
+            display: flex;
+            flex-direction: column;
+            font-family: 'Poppins', sans-serif;
+            min-height: 200vh; /* juste pour tester le sticky en scrollant, à retirer plus tard */
+        }
+
+        /* ===== ENTÊTE ===== */
+        .header {
+            display: flex;
+            flex-direction: row;
+            position: sticky;
+            top: 0;                 /* ✅ sans ça, sticky ne colle à rien */
+            z-index: 100;           /* reste au-dessus du contenu */
+            box-sizing: border-box; /* le padding ne fait pas déborder les 100% */
+            width: 100%;
+            height: 70px;
+            padding: 0 40px;        /* de l'air sur les côtés */
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--fond-header);
+            backdrop-filter: blur(12px);         /* 🪟 effet verre dépoli */
+            -webkit-backdrop-filter: blur(12px); /* pour Safari */
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Fine ligne dorée dégradée en bas de l'entête */
+        .header::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--or), transparent);
+            opacity: 0.6;
+        }
+
+        .header h3 { color: white; }
+
+        /* ===== LOGO ===== */
+        .logo {
+            font-size: 19px;
+            font-weight: 900;
+            letter-spacing: -1px; /* ✅ -4px écrasait le S contre le G */
+            color: white;
+            text-align: center;
+            cursor: pointer;
+            transition: text-shadow 0.3s ease, transform 0.3s ease;
+        }
+
+        .logo h1 { margin: 0; } /* enlève la marge par défaut du h1 */
+
+        .logo span { color: var(--or); }
+
+        /* Le logo s'illumine et grossit un poil au survol ✨ */
+        .logo:hover {
+            transform: scale(1.08);
+            text-shadow: 0 0 12px rgba(255, 204, 25, 0.6);
+        }
+
+        /* ===== NAVIGATION ===== */
+        /* ✅ Les liens sont regroupés dans <nav> : ils restent ensemble à droite */
+        .nav {
+            display: flex;
+            gap: 8px;
+        }
+
+        .header a {
+            position: relative;      /* nécessaire pour placer le soulignement */
+            color: var(--texte);
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 500;
+            padding: 8px 14px;
+            border-radius: 20px;
+            transition: color 0.3s ease, background-color 0.3s ease;
+        }
+
+        /* Soulignement doré caché (largeur 0) */
+        .header a::after {
+            content: "";
+            position: absolute;
+            left: 50%;
+            bottom: 2px;
+            width: 0;
+            height: 2px;
+            background-color: var(--or);
+            border-radius: 2px;
+            transform: translateX(-50%);
+            transition: width 0.3s ease;
+        }
+
+        /* Au survol : le texte devient doré et le soulignement se déploie depuis le centre */
+        .header a:hover {
+            color: var(--or);
+        }
+        .header a:hover::after {
+            width: 50%;
+        }
+
+        /* ✅ Plus de :visited gris, sinon les liens ont l'air "morts" après un clic */
+
+        /* Accessibilité : contour visible pour la navigation au clavier */
+        .header a:focus-visible {
+            outline: 2px solid var(--or);
+            outline-offset: 2px;
+        }
+
+        /* Page active : une petite pilule dorée autour */
+        .header a.active {
+            color: var(--or);
+            background-color: rgba(255, 204, 25, 0.12);
+        }
+        .header a.active::after {
+            width: 0; /* pas de soulignement, la pilule suffit */
+        }
+
+        /* ===== PETITS ÉCRANS (téléphones) ===== */
+        @media (max-width: 768px) {
+            .header {
+                padding: 0 16px;
+            }
+            .nav {
+                gap: 2px;
+                overflow-x: auto; /* les liens défilent horizontalement au lieu de déborder */
+            }
+            .header a {
+                font-size: 13px;
+                padding: 6px 10px;
+                white-space: nowrap;
+            }
+        }
+
+        p{
+            color: chartreuse;
+        }
+    </style>
+</head>
+<body>
+    <!-- <header> est la balise "officielle" pour un entête -->
+    <header class="header">
+        <div class="logo">
+            <h1>S <span>G</span></h1>
+        </div>
+
+        <!-- ✅ Tous les liens rangés ensemble dans <nav> -->
+        <nav class="nav">
+            <a href="index.html">Accueil</a>
+            <a href="a_propos.html">À propos</a>
+            <a href="projet.html" class="active">Projets</a>
+            <a href="competence.html">Compétences</a>
+            <a href="parcours.html">Parcours</a>
+            <a href="contact.html">Contact</a>
+        </nav>
+    </header>
+    <div>
+        <p >Bientôt disponible 🙂‍↔️</p>
+    </div>
+</body>
+</html>

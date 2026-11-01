@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SayoubaGuiro_portfolio</title>
+
+    <!-- Police moderne -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+
+    <style>
+
+        /* ===== VARIABLES ===== */
+        :root {
+            --fond: rgb(2, 2, 43);
+            --fond-header: rgba(1, 1, 20, 0.75);
+            --or: #ffcc19;
+            --texte: #e8e8f0;
+            --texte-doux: #a9aac8;                  /* gris-bleu pour les textes secondaires */
+            --carte-haut: #10105a;                  /* couleurs du dégradé des cartes */
+            --carte-bas: #07072e;
+        }
+
+
+        /* ===== PAGE ===== */
+        body {
+            margin: 0;
+            background-color: var(--fond);
+            /* deux "lueurs" douces (or + bleu), comme sur la page Compétences */
+            background-image:
+                radial-gradient(circle at 15% 0%, rgba(255, 204, 25, 0.10), transparent 40%),
+                radial-gradient(circle at 90% 35%, rgba(27, 119, 240, 0.18), transparent 45%);
+            background-attachment: fixed;
+            display: flex;
+            flex-direction: column;
+            font-family: 'Poppins', sans-serif;
+            color: var(--texte);
+            min-height: 100vh;                      /* MODIF : était 200vh (c'était juste pour tester le sticky) */
+        }
+
+        /* SUPPRIMÉ : la règle "p { color: chartreuse }" (c'était un test, elle colorait TOUS les paragraphes en vert fluo) */
+
+
+        /* ===== ENTÊTE ===== */
+        .header {
+            display: flex;
+            flex-direction: row;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-sizing: border-box;
+            width: 100%;
+            height: 70px;
+            padding: 0 40px;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--fond-header);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .header::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--or), transparent);
+            opacity: 0.6;
+        }
+
+        .header h3 {
+            color: white;
+        }
+
+
+        /* ===== LOGO ===== */
+        .logo {
+            font-size: 19px;
+            font-weight: 900;
+            letter-spacing: -1px;
+            color: white;
+            text-align: center;
+            cursor: pointer;
+            transition: text-shadow 0.3s ease, transform 0.3s ease;
+        }
+
+        .logo h1 {
+            margin: 0;
+        }
+
+        .logo span {
+            color: var(--or);
+        }
+
+        .logo:hover {
+            transform: scale(1.08);
+            text-shadow: 0 0 12px rgba(255, 204, 25, 0.6);
+        }
+
+
+        /* ===== NAVIGATION ===== */
+        .nav {
+            display: flex;
+            gap: 8px;
+        }
+
+        .header a {
+            position: relative;
+            color: var(--texte);
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 500;
+            padding: 8px 14px;
+            border-radius: 20px;
+            transition: color 0.3s ease, background-color 0.3s ease;
+        }
+
+        .header a::after {
+            content: "";
+            position: absolute;
+            left: 50%;
+            bottom: 2px;
+            width: 0;
+            height: 2px;
+            background-color: var(--or);
+            border-radius: 2px;
+            transform: translateX(-50%);
+            transition: width 0.3s ease;
+        }
+
+        .header a:hover {
+            color: var(--or);
+        }
+
+        .header a:hover::after {
+            width: 50%;
+        }
+
+        .header a:focus-visible {
+            outline: 2px solid var(--or);
+            outline-offset: 2px;
+        }
+
+        .header a.active {
+            color: var(--or);
+            background-color: rgba(255, 204, 25, 0.12);
+        }
+
+        .header a.active::after {
+            width: 0;
+        }
+
+
+        /* ===== PETITS ÉCRANS (entête) ===== */
+        @media (max-width: 768px) {
+            .header {
+                padding: 0 16px;
+            }
+
+            .nav {
+                gap: 2px;
+                overflow-x: auto;
+            }
+
+            .header a {
+                font-size: 13px;
+                padding: 6px 10px;
+                white-space: nowrap;
+            }
+        }
+
+
+        /* ===== AJOUT : CONTENEUR GÉNÉRAL DE LA PAGE ===== */
+        .apropos {
+            width: 100%;
+            max-width: 1100px;                      /* le contenu ne s'étire pas sur les grands écrans */
+            margin: 0 auto;                         /* centré */
+            padding: 50px 20px 60px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            gap: 34px;                              /* espace entre chaque grand bloc */
+        }
+
+
+        /* ===== AJOUT : BLOC D'ACCUEIL (HERO) ===== */
+        .hero {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;       /* texte à gauche (large), portrait à droite */
+            align-items: center;
+            gap: 40px;
+        }
+
+        /* Petite étiquette au-dessus du titre */
+        .tag {
+            display: inline-block;
+            padding: 6px 16px;
+            margin-bottom: 18px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--or);
+            background-color: rgba(255, 204, 25, 0.12);
+            border: 1px solid rgba(255, 204, 25, 0.4);
+            border-radius: 20px;
+        }
+
+        .hero h2 {
+            margin: 0 0 18px;
+            font-size: clamp(30px, 5vw, 48px);      /* taille qui s'adapte à l'écran */
+            font-weight: 900;
+            line-height: 1.15;
+            color: white;
+            letter-spacing: -1px;
+        }
+
+        .hero h2 span {
+            color: var(--or);
+            text-shadow: 0 0 22px rgba(255, 204, 25, 0.45);
+        }
+
+        .hero p {
+            margin: 0 0 14px;
+            font-size: 16px;
+            line-height: 1.8;                       /* interligne aéré = texte facile à lire */
+            color: var(--texte);
+        }
+
+        /* Les 3 spécialités : web, desktop, mobile */
+        .specialites {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 22px;
+        }
+
+        .specialites span {
+            padding: 8px 18px;
+            font-size: 14px;
+            font-weight: 600;
+            color: white;
+            background-color: rgba(255, 255, 255, 0.07);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+        }
+
+        /* --- Portrait --- */
+        .hero-photo {
+            display: flex;
+            justify-content: center;
+        }
+
+        .avatar {
+            width: 230px;
+            height: 230px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 70px;
+            font-weight: 900;
+            color: var(--fond);
+            background: linear-gradient(135deg, var(--or), #ff8a3d);
+            border: 6px solid rgba(255, 255, 255, 0.12);
+            box-shadow:
+                0 25px 50px rgba(0, 0, 0, 0.7),
+                0 0 50px rgba(255, 204, 25, 0.4);
+            overflow: hidden;
+            animation: flotte 5s ease-in-out infinite;   /* le portrait flotte doucement */
+        }
+
+        /* Quand tu auras une photo : <img src="images/photo.jpg" alt="Sayouba Guiro"> dans .avatar */
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        @keyframes flotte {
+            0%, 100% { transform: translateY(0); }
+            50%      { transform: translateY(-12px); }
+        }
+
+
+        /* ===== AJOUT : STYLE COMMUN DES CARTES ===== */
+        /* (même recette que les cartes de la page Compétences) */
+        .carte {
+            --accent: var(--or);                    /* couleur propre à chaque carte */
+            position: relative;
+            box-sizing: border-box;
+            padding: 24px 26px 28px;
+            border-radius: 18px;
+            background: linear-gradient(145deg, var(--carte-haut), var(--carte-bas));
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-top: 4px solid var(--accent);    /* liseré de couleur en haut */
+            box-shadow:
+                0 25px 50px rgba(0, 0, 0, 0.7),
+                0 0 30px rgba(255, 204, 25, 0.25);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .carte:hover {
+            transform: translateY(-8px);
+            box-shadow:
+                0 35px 60px rgba(0, 0, 0, 0.8),
+                0 0 40px var(--accent);
+        }
+
+        .carte h3 {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 0 0 16px;
+            padding-bottom: 12px;
+            font-size: 20px;
+            font-weight: 700;
+            color: white;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .carte p {
+            margin: 0 0 12px;
+            font-size: 15px;
+            line-height: 1.8;
+            color: var(--texte);
+        }
+
+        .carte-technos { --accent: #7CFC00; }       /* vert   */
+        .carte-vision  { --accent: #3b9bff; }       /* bleu   */
+        .carte-philo   { --accent: #b57bff; }       /* violet */
+
+
+        /* ===== AJOUT : CHIPS DES TECHNOLOGIES ===== */
+        .chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 6px;
+        }
+
+        .chips span {
+            padding: 8px 18px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--accent);
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--accent);
+            border-radius: 20px;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+
+        .chips span:hover {
+            transform: translateY(-4px);
+            background-color: rgba(255, 255, 255, 0.12);
+        }
+
+
+        /* ===== AJOUT : VISION + PHILOSOPHIE CÔTE À CÔTE ===== */
+        .grille-2 {
+            display: grid;
+            grid-template-columns: 1.3fr 1fr;
+            gap: 28px;
+            align-items: stretch;                   /* les 2 cartes ont la même hauteur */
+        }
+
+
+        /* ===== AJOUT : FRISE (timeline) DE LA VISION ===== */
+        .timeline {
+            margin-top: 22px;
+            padding-left: 26px;
+            border-left: 2px dashed rgba(255, 255, 255, 0.2);   /* le fil vertical */
+        }
+
+        .etape {
+            position: relative;
+            margin-bottom: 24px;
+        }
+
+        .etape:last-child {
+            margin-bottom: 0;
+        }
+
+        /* La pastille sur le fil */
+        .etape::before {
+            content: "";
+            position: absolute;
+            left: -34px;
+            top: 4px;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background-color: var(--fond);
+            border: 3px solid var(--accent);
+        }
+
+        /* La 1re étape (aujourd'hui) est pleine et brille */
+        .etape.actuelle::before {
+            background-color: var(--accent);
+            box-shadow: 0 0 12px var(--accent);
+        }
+
+        .etape .periode {
+            display: block;
+            margin-bottom: 4px;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--accent);
+        }
+
+        .etape p {
+            margin: 0;
+            font-size: 14.5px;
+        }
+
+
+        /* ===== AJOUT : CITATION DE LA PHILOSOPHIE ===== */
+        .carte-philo p:first-of-type::before {
+            content: "“";                           /* grand guillemet décoratif */
+            display: block;
+            font-size: 70px;
+            line-height: 0.6;
+            font-weight: 900;
+            color: var(--accent);
+            opacity: 0.6;
+        }
+
+
+        /* ===== AJOUT : BANDEAU "MON OBJECTIF" ===== */
+        .objectif {
+            padding: 34px 30px;
+            text-align: center;
+            border-radius: 18px;
+            background: linear-gradient(135deg, rgba(255, 204, 25, 0.18), rgba(27, 119, 240, 0.18));
+            border: 1px solid rgba(255, 204, 25, 0.45);
+            box-shadow: 0 0 40px rgba(255, 204, 25, 0.2);
+        }
+
+        .objectif h3 {
+            margin: 0 0 12px;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--or);
+        }
+
+        .objectif p {
+            max-width: 800px;
+            margin: 0 auto;
+            font-size: clamp(17px, 2.4vw, 22px);
+            font-weight: 600;
+            line-height: 1.6;
+            color: white;
+        }
+
+
+        /* ===== AJOUT : APPARITION EN CASCADE ===== */
+        .hero, .carte, .objectif {
+            animation: apparition 0.7s ease both;
+        }
+
+        .carte-technos { animation-delay: 0.15s; }
+        .grille-2 .carte-vision { animation-delay: 0.25s; }
+        .grille-2 .carte-philo { animation-delay: 0.35s; }
+        .objectif { animation-delay: 0.45s; }
+
+        @keyframes apparition {
+            from { opacity: 0; transform: translateY(30px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Respect des personnes qui désactivent les animations */
+        @media (prefers-reduced-motion: reduce) {
+            .hero, .carte, .objectif, .avatar { animation: none; }
+        }
+
+
+        /* ===== AJOUT : TABLETTES ET TÉLÉPHONES ===== */
+        @media (max-width: 900px) {
+            .hero {
+                grid-template-columns: 1fr;         /* une seule colonne */
+                text-align: center;
+            }
+
+            .hero-photo {
+                order: -1;                          /* le portrait passe AU-DESSUS du texte */
+            }
+
+            .specialites {
+                justify-content: center;
+            }
+
+            .grille-2 {
+                grid-template-columns: 1fr;         /* vision puis philosophie, l'une sous l'autre */
+            }
+        }
+
+        @media (max-width: 480px) {
+            .avatar {
+                width: 180px;
+                height: 180px;
+                font-size: 56px;
+            }
+
+            .carte {
+                padding: 20px 18px 24px;
+            }
+        }
+
+
+        /* ===== AJOUT : PIED DE PAGE ===== */
+        .pied {
+            margin-top: auto;
+            padding: 22px 20px;
+            text-align: center;
+            font-size: 13px;
+            color: var(--texte-doux);
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .pied span {
+            color: var(--or);
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <!-- ===== HEADER ===== -->
+    <header class="header">
+
+        <div class="logo">
+            <h1>S <span>G</span></h1>
+        </div>
+
+        <nav class="nav">
+            <a href="index.html">Accueil</a>
+            <a href="a_propos.html" class="active">À propos</a>
+            <a href="projet.html">Projets</a>
+            <a href="competence.html">Compétences</a>
+            <a href="parcours.html">Parcours</a>
+            <a href="contact.html">Contact</a>
+        </nav>
+
+    </header>
+
+
+    <!-- ===== CONTENU DE LA PAGE ===== -->
+    <main class="apropos">
+
+        <!-- ===== 1. BLOC D'ACCUEIL ===== -->
+        <section class="hero">
+
+            <div class="hero-texte">
+                <span class="tag">💻 Développeur junior</span>
+
+                <h2>Bonjour, moi c'est <span>Sayouba Guiro</span> 👋</h2>
+
+                <p>Je suis un développeur junior passionné par les technologies numériques, spécialisé dans le développement web, desktop et mobile.</p>
+
+                <p>Curieux, autodidacte et toujours animé par l'envie d'apprendre, je prends plaisir à concevoir des applications, résoudre des problèmes et transformer des idées en solutions numériques concrètes.</p>
+
+                <!-- Les 3 spécialités -->
+                <div class="specialites">
+                    <span>🌐 Web</span>
+                    <span>🖥️ Desktop</span>
+                    <span>📱 Mobile</span>
+                </div>
+            </div>
+
+            <!-- Portrait : pour l'instant les initiales, remplace par une vraie photo quand tu veux -->
+            <div class="hero-photo">
+                <div class="avatar">SG</div>
+            </div>
+
+        </section>
+
+
+        <!-- ===== 2. TECHNOLOGIES ===== -->
+        <section class="carte carte-technos">
+            <h3>⚙️ Mes technologies</h3>
+
+            <p>Je développe progressivement mes compétences dans plusieurs technologies, notamment HTML, CSS, JavaScript, PHP, Laravel, Dart et Flutter. Je m'intéresse également aux bases de données et aux architectures permettant de concevoir des applications performantes et évolutives.</p>
+
+            <div class="chips">
+                <span>HTML</span>
+                <span>CSS</span>
+                <span>JavaScript</span>
+                <span>PHP</span>
+                <span>Laravel</span>
+                <span>Dart</span>
+                <span>Flutter</span>
+                <span>Bases de données</span>
+            </div>
+        </section>
+
+
+        <!-- ===== 3. VISION + PHILOSOPHIE ===== -->
+        <div class="grille-2">
+
+            <!-- Ma vision -->
+            <section class="carte carte-vision">
+                <h3>🔭 Ma vision</h3>
+
+                <p>Pour moi, le développement informatique ne se limite pas à écrire du code. C'est aussi comprendre les systèmes, optimiser les performances, automatiser les processus et concevoir des solutions fiables.</p>
+
+                <!-- La frise : aujourd'hui -> DevOps -> IoT -->
+                <div class="timeline">
+
+                    <div class="etape actuelle">
+                        <span class="periode">Aujourd'hui</span>
+                        <p>Je construis mes bases en développement web, desktop et mobile.</p>
+                    </div>
+
+                    <div class="etape">
+                        <span class="periode">Prochaine étape · DevOps</span>
+                        <p>Mon ambition est d'évoluer progressivement vers le DevOps, afin de maîtriser l'intégration continue, le déploiement, l'automatisation et l'administration des infrastructures.</p>
+                    </div>
+
+                    <div class="etape">
+                        <span class="periode">Plus long terme · IoT</span>
+                        <p>Je souhaite explorer le domaine de l'Internet des objets (IoT) et contribuer au développement de solutions intelligentes associant logiciels, électronique et objets connectés.</p>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- Ma philosophie -->
+            <section class="carte carte-philo">
+                <h3>💡 Ma philosophie</h3>
+
+                <p>J'aime apprendre, expérimenter et relever de nouveaux défis. Je considère chaque projet comme une occasion de progresser, de repousser mes limites et de construire mon expérience.</p>
+            </section>
+
+        </div>
+
+
+        <!-- ===== 4. OBJECTIF ===== -->
+        <section class="objectif">
+            <h3>🎯 Mon objectif</h3>
+            <p>Évoluer continuellement pour devenir un ingénieur logiciel polyvalent, capable de concevoir, déployer et connecter des solutions technologiques innovantes.</p>
+        </section>
+
+    </main>
+
+
+    <!-- ===== PIED DE PAGE ===== -->
+    <footer class="pied">
+        © 2026 <span>Sayouba Guiro</span> · Portfolio
+    </footer>
+
+</body>
+</html>
